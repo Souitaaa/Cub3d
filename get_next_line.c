@@ -6,11 +6,12 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 23:02:03 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/13 23:02:16 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/15 03:46:54 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "cub3d.h"
 
 
 char	*all_buffer(char *str, int fd)

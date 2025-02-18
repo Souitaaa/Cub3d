@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 23:02:31 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/13 23:13:11 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/15 03:46:32 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 
 char	*ft_strchr(const char *s, int c);
 char	*get_next_line(int fd);
-size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *s);

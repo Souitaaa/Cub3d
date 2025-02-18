@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/14 23:42:02 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/18 00:43:27 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ typedef struct s_data
 {
     int height;
     int width ;
+    char *file;
     char **map;
+    char *no;
+    char *so;
+    char *we;
+    char *ea;
 }   t_data;
 
 
@@ -37,5 +42,9 @@ char	*get_next_line(int fd);
 void	*ft_memset(void *b, int c, size_t len);
 char	*ft_strdup(char *s1);
 int	ft_strncmp(char *s1, char *s2, size_t n);
+char	*ft_strjoin(char *s1, char *s2);
+char	**ft_split(char *s, char c);
+int    ft_strcmp(char *s1, char *s2);
+
 
 #endif

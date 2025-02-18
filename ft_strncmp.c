@@ -5,17 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 17:06:00 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/17 17:06:12 by csouita          ###   ########.fr       */
+/*   Created: 2025/02/14 23:41:24 by csouita           #+#    #+#             */
+/*   Updated: 2025/02/14 23:41:53 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int    ft_strcmp(char *s1, char *s2)
+int	ft_strncmp(char *s1, char *s2, size_t n)
 {
-    int i = 0;
-    if (s1[i] && s2[i] && s1[i] == s2[i])
-        i++;
-    return (s1[i]-s2[i]);
+	size_t			i;
+	unsigned char	*us1;
+	unsigned char	*us2;
+
+	i = 0;
+	us1 = (unsigned char *)(s1);
+	us2 = (unsigned char *)(s2);
+	while ((us1[i] || us2[i]) && n > i)
+	{
+		if (us1[i] != us2[i])
+		{
+			return (us1[i] - us2[i]);
+		}
+		i++;
+	}
+	return (0);
 }
