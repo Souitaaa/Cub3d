@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/18 00:43:27 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:02:50 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ typedef struct s_data
     char *so;
     char *we;
     char *ea;
+    char *c;
+    char *f;
+    char *no_key;
+    char *so_key;
+    char *we_key;
+    char *ea_key;
+    char *c_key;
+    char *f_key;
 }   t_data;
 
 
@@ -45,6 +53,8 @@ int	ft_strncmp(char *s1, char *s2, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 char	**ft_split(char *s, char c);
 int    ft_strcmp(char *s1, char *s2);
+char	*ft_strrchr(char *s, int c);
+long	ft_atoi(char *str);
 
 
 #endif

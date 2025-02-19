@@ -6,11 +6,46 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/18 22:05:18 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/19 19:19:10 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	check_xpm(t_data *data)
+{
+	int	len;
+
+	len = ft_strlen(data->no) - 1;
+	if (data->no[len - 1] != 'm' || data->no[len - 2] != 'p' || data->no[len
+		- 3] != 'x' || data->no[len - 4] != '.')
+	{
+		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		return (1);
+	}
+	len = ft_strlen(data->so) - 1;
+	if (data->so[len - 1] != 'm' || data->so[len - 2] != 'p' || data->so[len
+		- 3] != 'x' || data->so[len - 4] != '.')
+	{
+		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		return (1);
+	}
+	len = ft_strlen(data->we) - 1;
+	if (data->we[len - 1] != 'm' || data->we[len - 2] != 'p' || data->we[len
+		- 3] != 'x' || data->we[len - 4] != '.')
+	{
+		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		return (1);
+	}
+	len = ft_strlen(data->ea) - 1;
+	if (data->ea[len - 1] != 'm' || data->ea[len - 2] != 'p' || data->ea[len
+		- 3] != 'x' || data->ea[len - 4] != '.')
+	{
+		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		return (1);
+	}
+	return (0);
+}
 
 int	check_whitespace(char *line)
 {
@@ -70,6 +105,11 @@ int	count_textures(t_data *data)
 			|| ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0
 			|| ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0)
 		{
+			if (!check_empty(line))
+			{
+				free(line);
+				line = get_next_line(fd);
+			}
 			count++;
 		}
 		free(line);
@@ -113,62 +153,104 @@ int	parse_textures(t_data *data, int *i)
 {
 	int		fd;
 	char	**split;
+	char	**textures;
 	char	*line;
 	int		j;
 
 	(void)i;
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
+	textures = malloc(sizeof(char *) * (data->height + 1));
 	line = get_next_line(fd);
 	j = 0;
 	while (line)
 	{
 		split = ft_split(line, ' ');
 		printf("count split = %d\n", count_split(split));
-        printf("j == %d\n", j);
-        printf("count_textures = %d\n", count_textures(data));
 		if (count_split(split) != 2)
 		{
-			ft_putstr_fd("Error\nInvalid texture\n", 2);
+			printf("j == %d\n", j);
+			printf("count_textures = %d\n", count_textures(data));
+			if (j <= count_textures(data))
+			{
+				printf("j == %d\n", j);
+				printf("count_textures = %d\n", count_textures(data));
+				printf("dkhallllllllllllt\n");
+				break ;
+			}
+			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
 			return (0);
 		}
 		else if (!ft_strcmp(split[0], "NO"))
-        {
+		{
 			data->no = ft_strdup(split[1]);
-            printf("data->no = %s\n", data->no);
-        }
-        else if (!ft_strcmp(split[0], "SO"))
-        {
-            data->so = ft_strdup(split[1]);
-            printf("data->so = %s\n", data->so);
-        }
-        else if (!ft_strcmp(split[0], "WE"))
-        {
-            data->we = ft_strdup(split[1]);
-            printf("data->we = %s\n", data->we);
-        }
-        else if (!ft_strcmp(split[0], "EA"))
-        {
-            data->ea = ft_strdup(split[1]);
-            printf("data->ea = %s\n", data->ea);
-        }
-        free(line);
-        line = get_next_line(fd);
-        j++;
-	}
-	split[j] = NULL;
-	close(fd);
-	j = 0;
-	while (split[j])
-	{
-		for (int k = 0; split[j]; k++)
-			printf("%s\n", split[j]);
+			data->no_key = ft_strdup(split[0]);
+			// printf("data->no = %s\n", data->no);
+		}
+		else if (!ft_strcmp(split[0], "SO"))
+		{
+			data->so = ft_strdup(split[1]);
+			data->so_key = ft_strdup(split[0]);
+			// printf("data->so = %s\n", data->so);
+		}
+		else if (!ft_strcmp(split[0], "WE"))
+		{
+			data->we = ft_strdup(split[1]);
+			data->we_key = ft_strdup(split[0]);
+			// printf("data->we = %s\n", data->we);
+		}
+		else if (!ft_strcmp(split[0], "EA"))
+		{
+			data->ea = ft_strdup(split[1]);
+			data->ea_key = ft_strdup(split[0]);
+			// printf("data->ea = %s\n", data->ea);
+		}
+		printf("split[00000] = %s\n", split[0]);
+		if (!ft_strcmp(split[0], "F") || !ft_strcmp(split[0], "C"))
+		{
+			textures = ft_split(split[1], ',');
+			if (count_split(textures) != 3)
+			{
+				ft_putstr_fd("Error\nInvalid color\n", 2);
+				return (0);
+			}
+			else if (!ft_strcmp(split[0], "F"))
+			{
+				data->f = ft_strdup(split[1]);
+				data->f_key = ft_strdup(split[0]);
+				// printf("data->f = %s\n", data->f);
+			}
+			else if (!ft_strcmp(split[0], "C"))
+			{
+				data->c = ft_strdup(split[1]);
+				data->c_key = ft_strdup(split[0]);
+				// printf("data->c = %s\n", data->c);
+			}
+		}
+		free(line);
+		for (int k = 0; split[k]; k++)
+			free(split[k]);
+		free(split);
+		// for (int k = 0; textures[k]; k++)
+		// 	free(textures[k]);
+		// free(textures);
+		// free(line);
+		line = get_next_line(fd);
 		j++;
 	}
-	for (int k = 0; k < data->height; k++)
-		free(split[k]);
-	free(split);
-	free(line);
+	// split[j] = NULL;
+	close(fd);
+	j = 0;
+	// while (split[j])
+	// {
+	// 	for (int k = 0; split[j]; k++)
+	// 		printf("%s\n", split[j]);
+	// 	j++;
+	// }
+	// for (int k = 0; k < data->height; k++)
+	// free(split[k]);
+	// free(split);
+	// free(line);
 	return (1);
 }
 
@@ -293,18 +375,20 @@ int	main(int ac, char *av[])
 		while (data->map[i][j])
 		{
 			if (data->map[i][j] == '0')
-			{    
-                if (!check_empty(data->map[i + 1]) || !check_empty(data->map[i - 1])
-                    || !check_empty(data->map[i] + j + 1) || !check_empty(data->map[i] + j - 1))
-                {
-                    ft_putstr_fd("Error\nMap wwwis not closed\n", 2);
-                    exit(1);
-                }
+			{
+				if (!check_empty(data->map[i + 1]) || !check_empty(data->map[i
+						- 1]) || !check_empty(data->map[i] + j + 1)
+					|| !check_empty(data->map[i] + j - 1))
+				{
+					ft_putstr_fd("Error\nMap wwwis not closed\n", 2);
+					exit(1);
+				}
 				if (i == 0 || i == data->height - 1 || j == 0
 					|| j == (int)ft_strlen(data->map[i]) - 1
 					|| !is_valide(data->map[i][j + 1])
-					|| !is_valide(data->map[i][j - 1]) 
-                    || !is_valide(data->map[i + 1][j]) || !is_valide(data->map[i - 1][j])) // check if the map is closed 11110 111
+					|| !is_valide(data->map[i][j - 1]) || !is_valide(data->map[i
+						+ 1][j]) || !is_valide(data->map[i - 1][j]))
+					// check if the map is closed 11110 111
 				{
 					ft_putstr_fd("Error\nMap is not closed\n", 2);
 					for (int k = 0; k < data->height; k++)
@@ -320,7 +404,26 @@ int	main(int ac, char *av[])
 	}
 	i = 0;
 	parse_textures(data, &i);
-	// printf("NO = %s\n", data->no);
+	if(check_xpm(data))
+	{
+		for (int k = 0; k < data->height; k++)
+			free(data->map[k]);
+		free(data->map);
+		free(data);
+		return (1);
+	}
+	printf("NO = %s\n", data->no);
+	printf("SO = %s\n", data->so);
+	printf("WE = %s\n", data->we);
+	printf("EA = %s\n", data->ea);
+	printf("F = %s\n", data->f);
+	printf("C = %s\n", data->c);
+	printf("NO_KEY = %s\n", data->no_key);
+	printf("SO_KEY = %s\n", data->so_key);
+	printf("WE_KEY = %s\n", data->we_key);
+	printf("EA_KEY = %s\n", data->ea_key);
+	printf("F_KEY = %s\n", data->f_key);
+	printf("C_KEY = %s\n", data->c_key);
 	// for (int k = 0; k < data->height; k++)
 	//     free(data->map[k]);
 	// free(data->map);
