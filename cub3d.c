@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/19 19:19:10 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/19 20:01:33 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	count_textures(t_data *data)
 	{
 		if (!check_empty(line))
 		{
+			// printf("line = %s\n", line);
 			free(line);
 			line = get_next_line(fd);
 		}
@@ -105,11 +106,6 @@ int	count_textures(t_data *data)
 			|| ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0
 			|| ft_strncmp(line, "F", 1) == 0 || ft_strncmp(line, "C", 1) == 0)
 		{
-			if (!check_empty(line))
-			{
-				free(line);
-				line = get_next_line(fd);
-			}
 			count++;
 		}
 		free(line);
@@ -131,9 +127,11 @@ int	count_line(t_data *data)
 	while (line)
 	{
 		if (check_empty(line))
-			line_count++;
-		free(line);
-		line = get_next_line(fd);
+		{
+			free(line);
+			line = get_next_line(fd);			
+		}
+		line_count++;
 	}
 	close(fd);
 	return (line_count);
