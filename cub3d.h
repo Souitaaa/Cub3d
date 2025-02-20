@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/19 19:02:50 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/20 19:25:55 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <mlx.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <X11/X.h>
 
 typedef struct s_data
 {
@@ -41,6 +46,9 @@ typedef struct s_data
     char *ea_key;
     char *c_key;
     char *f_key;
+    int split1;
+    int split2;
+    int split3;
 }   t_data;
 
 

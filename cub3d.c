@@ -6,11 +6,67 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/19 20:04:10 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/20 19:29:38 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	check_empty(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\v'
+			&& line[i] != '\f' && line[i] != '\r' && line[i] != '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+
+int	count_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+		i++;
+	return (i);
+}
+
+void handle_colors(char *line)
+{
+	int i = 0 ;
+	int count = 0;
+	while(line[i])
+	{
+		if(line[i] == ',')
+			count++;
+		i++;
+	}
+	if (count != 2)
+	{
+		ft_putstr_fd("Error\nInvaliiiiiiid color\n", 2);
+		exit(1);
+	}
+	char **split = ft_split(line, ',');
+	if(count_split(split) != 3)
+	{
+		ft_putstr_fd("Error\nInvalid color\n", 2);
+		exit(1);
+	}
+	printf("split = %s\n", split[0]);
+	printf("atoi = %ld\n", ft_atoi(split[0]));
+	printf("split = %s\n", split[1]);
+	printf("atoi = %ld\n", ft_atoi(split[1]));
+	printf("split = %s\n", split[2]);
+	printf("atoi  = %ld\n", ft_atoi(split[2]));
+	return;
+}
 
 int	check_xpm(t_data *data)
 {
@@ -56,21 +112,6 @@ int	check_whitespace(char *line)
 		|| line[i] == '\f' || line[i] == '\r')
 		i++;
 	return (i);
-}
-
-int	check_empty(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\v'
-			&& line[i] != '\f' && line[i] != '\r' && line[i] != '\n')
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 int	parse_element(t_data *data, int *i)
@@ -129,7 +170,7 @@ int	count_line(t_data *data)
 		if (check_empty(line))
 		{
 			free(line);
-			line = get_next_line(fd);			
+			line = get_next_line(fd);
 		}
 		line_count++;
 	}
@@ -137,47 +178,43 @@ int	count_line(t_data *data)
 	return (line_count);
 }
 
-int	count_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split[i])
-		i++;
-	return (i);
-}
-
 int	parse_textures(t_data *data, int *i)
 {
 	int		fd;
 	char	**split;
-	char	**textures;
 	char	*line;
 	int		j;
 
+	// char	**textures;
 	(void)i;
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
-	textures = malloc(sizeof(char *) * (data->height + 1));
+	// textures = malloc(sizeof(char *) * (data->height + 1));
 	line = get_next_line(fd);
 	j = 0;
 	while (line)
 	{
 		split = ft_split(line, ' ');
-		printf("count split = %d\n", count_split(split));
+		// printf("count split = %d\n", count_split(split));
+		if (!check_empty(line))
+		{
+			free(line);
+			line = get_next_line(fd);
+			continue ;
+		}
 		if (count_split(split) != 2)
 		{
-			printf("j == %d\n", j);
-			printf("count_textures = %d\n", count_textures(data));
-			if (j <= count_textures(data))
+			// printf("j == %d\n", j);
+			// printf("count_textures = %d\n", count_textures(data));
+			if (j == 6)
 			{
-				printf("j == %d\n", j);
-				printf("count_textures = %d\n", count_textures(data));
-				printf("dkhallllllllllllt\n");
+				// printf("j == %d\n", j);
+				// printf("count_textures = %d\n", count_textures(data));
+				// printf("dkhallllllllllllt\n");
 				break ;
 			}
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
-			return (0);
+			exit(1);
 		}
 		else if (!ft_strcmp(split[0], "NO"))
 		{
@@ -203,27 +240,17 @@ int	parse_textures(t_data *data, int *i)
 			data->ea_key = ft_strdup(split[0]);
 			// printf("data->ea = %s\n", data->ea);
 		}
-		printf("split[00000] = %s\n", split[0]);
-		if (!ft_strcmp(split[0], "F") || !ft_strcmp(split[0], "C"))
+		else if (!ft_strcmp(split[0], "F"))
 		{
-			textures = ft_split(split[1], ',');
-			if (count_split(textures) != 3)
-			{
-				ft_putstr_fd("Error\nInvalid color\n", 2);
-				return (0);
-			}
-			else if (!ft_strcmp(split[0], "F"))
-			{
-				data->f = ft_strdup(split[1]);
-				data->f_key = ft_strdup(split[0]);
-				// printf("data->f = %s\n", data->f);
-			}
-			else if (!ft_strcmp(split[0], "C"))
-			{
-				data->c = ft_strdup(split[1]);
-				data->c_key = ft_strdup(split[0]);
-				// printf("data->c = %s\n", data->c);
-			}
+			handle_colors(split[1]);
+			data->f = ft_strdup(split[1]);
+			data->f_key = ft_strdup(split[0]);
+		}
+		else if (!ft_strcmp(split[0], "C"))
+		{
+			handle_colors(split[1]);
+			data->c = ft_strdup(split[1]);
+			data->c_key = ft_strdup(split[0]);
 		}
 		free(line);
 		for (int k = 0; split[k]; k++)
@@ -386,7 +413,7 @@ int	main(int ac, char *av[])
 					|| !is_valide(data->map[i][j + 1])
 					|| !is_valide(data->map[i][j - 1]) || !is_valide(data->map[i
 						+ 1][j]) || !is_valide(data->map[i - 1][j]))
-					// check if the map is closed 11110 111
+				// check if the map is closed 11110 111
 				{
 					ft_putstr_fd("Error\nMap is not closed\n", 2);
 					for (int k = 0; k < data->height; k++)
@@ -402,7 +429,7 @@ int	main(int ac, char *av[])
 	}
 	i = 0;
 	parse_textures(data, &i);
-	if(check_xpm(data))
+	if (check_xpm(data))
 	{
 		for (int k = 0; k < data->height; k++)
 			free(data->map[k]);
