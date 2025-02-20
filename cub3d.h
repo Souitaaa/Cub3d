@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/20 19:25:55 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/20 22:03:27 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ typedef struct s_data
     char *ea_key;
     char *c_key;
     char *f_key;
-    int split1;
-    int split2;
-    int split3;
+    int color_f;
+    int color_c;
 }   t_data;
 
 
@@ -63,6 +62,7 @@ char	**ft_split(char *s, char c);
 int    ft_strcmp(char *s1, char *s2);
 char	*ft_strrchr(char *s, int c);
 long	ft_atoi(char *str);
+int	create_trgb(int t, int r, int g, int b);
 
 
 #endif
