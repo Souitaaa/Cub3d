@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/20 22:03:27 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/22 23:08:29 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int    ft_strcmp(char *s1, char *s2);
 char	*ft_strrchr(char *s, int c);
 long	ft_atoi(char *str);
 int	create_trgb(int t, int r, int g, int b);
+char	**ft_split00(char *s);
 
 
 #endif

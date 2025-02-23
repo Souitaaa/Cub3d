@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/20 22:06:14 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/23 18:07:00 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,46 +53,56 @@ int  handle_colors(char *line)
 		ft_putstr_fd("Error\nInvaliiiiiiid color\n", 2);
 		exit(1);
 	}
-	char **split = ft_split(line, ',');
+	char **split = ft_split(line,',');
+	// printf("split[0] == %s\n",split[0]);
+	// printf("split[1] == %s\n",split[1]);
+	// printf("split[2] == %s\n",split[2]);
 	if(count_split(split) != 3)
 	{
-		ft_putstr_fd("Error\nInvalid color\n", 2);
+		printf("count is %d\n",count_split(split));
+		ft_putstr_fd("Error\nInvalid colrrrrr\n", 2);
 		exit(1);
 	}
 	int color = create_trgb(1, ft_atoi(split[0]), ft_atoi(split[1]), ft_atoi(split[2]));
+	printf("color = %d\n",color);
+	if (color == -1)
+	{
+		ft_putstr_fd("Error\nInvalid color",2);
+		exit(1);
+	}
 	return color;
 }
 
 int	check_xpm(t_data *data)
 {
 	int	len;
-
-	len = ft_strlen(data->no) - 1;
+	
+	len = ft_strlen(data->no) ;
 	if (data->no[len - 1] != 'm' || data->no[len - 2] != 'p' || data->no[len
 		- 3] != 'x' || data->no[len - 4] != '.')
-	{
-		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+	{	
+		ft_putstr_fd("Error\nInvalid file extension1\n", 2);
 		return (1);
 	}
-	len = ft_strlen(data->so) - 1;
+	len = ft_strlen(data->so);
 	if (data->so[len - 1] != 'm' || data->so[len - 2] != 'p' || data->so[len
 		- 3] != 'x' || data->so[len - 4] != '.')
 	{
-		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		ft_putstr_fd("Error\nInvalid file extension2\n", 2);
 		return (1);
 	}
-	len = ft_strlen(data->we) - 1;
+	len = ft_strlen(data->we);
 	if (data->we[len - 1] != 'm' || data->we[len - 2] != 'p' || data->we[len
 		- 3] != 'x' || data->we[len - 4] != '.')
 	{
-		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		ft_putstr_fd("Error\nInvalid file extension3\n", 2);
 		return (1);
 	}
-	len = ft_strlen(data->ea) - 1;
+	len = ft_strlen(data->ea);
 	if (data->ea[len - 1] != 'm' || data->ea[len - 2] != 'p' || data->ea[len
 		- 3] != 'x' || data->ea[len - 4] != '.')
 	{
-		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		ft_putstr_fd("Error\nInvalid file extension4\n", 2);
 		return (1);
 	}
 	return (0);
@@ -186,7 +196,7 @@ int	parse_textures(t_data *data, int *i)
 	j = 0;
 	while (line)
 	{
-		split = ft_split(line, ' ');
+		split = ft_split00(line);
 		if (!check_empty(line))
 		{
 			free(line);
@@ -197,6 +207,8 @@ int	parse_textures(t_data *data, int *i)
 		{
 			if (j == 6)
 				break ;
+			printf("j = %d\n",j);
+			printf("count_split = %d\n",count_split(split));
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
 			exit(1);
 		}
