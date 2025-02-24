@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/23 18:07:00 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:21:33 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,13 @@ int  handle_colors(char *line)
 		exit(1);
 	}
 	char **split = ft_split(line,',');
-	// printf("split[0] == %s\n",split[0]);
-	// printf("split[1] == %s\n",split[1]);
-	// printf("split[2] == %s\n",split[2]);
+
 	if(count_split(split) != 3)
 	{
-		printf("count is %d\n",count_split(split));
 		ft_putstr_fd("Error\nInvalid colrrrrr\n", 2);
 		exit(1);
 	}
 	int color = create_trgb(1, ft_atoi(split[0]), ft_atoi(split[1]), ft_atoi(split[2]));
-	printf("color = %d\n",color);
 	if (color == -1)
 	{
 		ft_putstr_fd("Error\nInvalid color",2);
@@ -182,6 +178,36 @@ int	count_line(t_data *data)
 	return (line_count);
 }
 
+int check_player_valid_pos(t_data *data)
+{
+
+	int i = data->first_line_in_map;
+	int j = 0;
+	int count = 0;
+	while (i < data->height)
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+			printf("data->hright = %d\n", data->height);
+			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || data->map[i][j] == 'E' || data->map[i][j] == 'W')
+			{
+				data->player_x = i;
+				data->player_y = j;
+				count++;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (count != 1)
+	{
+		ft_putstr_fd("Error\nInvalid player position\n", 2);
+		exit(1);
+	}
+	return 0;
+}
+
 int	parse_textures(t_data *data, int *i)
 {
 	int		fd;
@@ -201,45 +227,51 @@ int	parse_textures(t_data *data, int *i)
 		{
 			free(line);
 			line = get_next_line(fd);
+			data->first_line_in_map++;
 			continue ;
 		}
 		if (count_split(split) != 2)
 		{
 			if (j == 6)
 				break ;
-			printf("j = %d\n",j);
-			printf("count_split = %d\n",count_split(split));
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
 			exit(1);
 		}
 		else if (!ft_strcmp(split[0], "NO"))
 		{
+			data->first_line_in_map++;
 			data->no = ft_strdup(split[1]);
 			data->no_key = ft_strdup(split[0]);
 		}
 		else if (!ft_strcmp(split[0], "SO"))
 		{
+			data->first_line_in_map++;
 			data->so = ft_strdup(split[1]);
 			data->so_key = ft_strdup(split[0]);
 		}
 		else if (!ft_strcmp(split[0], "WE"))
 		{
+			data->first_line_in_map++;
 			data->we = ft_strdup(split[1]);
 			data->we_key = ft_strdup(split[0]);
 		}
 		else if (!ft_strcmp(split[0], "EA"))
 		{
+			data->first_line_in_map++;
 			data->ea = ft_strdup(split[1]);
 			data->ea_key = ft_strdup(split[0]);
 		}
 		else if (!ft_strcmp(split[0], "F"))
 		{
+			data->first_line_in_map++;
 			data->color_f = handle_colors(split[1]);
 			data->f = ft_strdup(split[1]);
 			data->f_key = ft_strdup(split[0]);
 		}
 		else if (!ft_strcmp(split[0], "C"))
 		{
+			data->first_line_in_map++;
+			printf("first line in map = %d\n", data->first_line_in_map);
 			data->color_c = handle_colors(split[1]);
 			data->c = ft_strdup(split[1]);
 			data->c_key = ft_strdup(split[0]);
@@ -256,6 +288,13 @@ int	parse_textures(t_data *data, int *i)
 	j = 0;
 	return (1);
 }
+
+// int check_player_pos(t_data *data)
+// {
+// 	int i = 0;
+// 	int j = 0;
+// 	while()
+// }
 
 int	is_valide2(char c)
 {
@@ -299,7 +338,7 @@ int	main(int ac, char *av[])
 	if (len < 4 || av[1][len - 1] != 'b' || av[1][len - 2] != 'u' || av[1][len
 		- 3] != 'c' || av[1][len - 4] != '.')
 	{
-		ft_putstr_fd("Error\nInvalid file extension\n", 2);
+		ft_putstr_fd("Error\nInvalid path extension\n", 2);
 		return (1);
 	}
 	fd = open(av[1], O_RDONLY);
@@ -408,6 +447,15 @@ int	main(int ac, char *av[])
 		free(data);
 		return (1);
 	}
+	check_player_valid_pos(data);
+	// if (check_player_pos(data))
+	// {
+	// 	for (int k = 0; k < data->height; k++)
+	// 		free(data->map[k]);
+	// 	free(data->map);
+	// 	free(data);
+	// 	return (1);
+	// }
 	printf("NO = %s\n", data->no);
 	printf("SO = %s\n", data->so);
 	printf("WE = %s\n", data->we);

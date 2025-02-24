@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/22 23:08:29 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:33:03 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ typedef struct s_data
     char *f_key;
     int color_f;
     int color_c;
+    int player_x;
+    int player_y;
+    int first_line_in_map;
 }   t_data;
 
 

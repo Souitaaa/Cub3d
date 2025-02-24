@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 18:54:07 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/23 18:01:00 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/23 18:08:32 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	ft_isdigit(int c)
 
 long	ft_atoi(char *str)
 {
-	printf("str = %s\n",str);
 	long (i), (sig), (res);
 	res = 0;
 	i = 0;
