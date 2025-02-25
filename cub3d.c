@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/25 02:25:50 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/25 18:49:51 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,8 @@ void first_line_in_map(t_data *data)
 	int i = data->first_line_in_map;
 	while (data->map[i])
 	{
+		if (data->map[i])
+			return;
 		if (!check_empty(data->map[i]))
 		{
 			data->first_line_in_map++;
@@ -511,6 +513,8 @@ int	main(int ac, char *av[])
 	// 	free(data);
 	// 	return (1);
 	// }
+	i = 0;
+
 	printf("NO = %s\n", data->no);
 	printf("SO = %s\n", data->so);
 	printf("WE = %s\n", data->we);
