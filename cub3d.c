@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/24 17:21:33 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/25 00:48:18 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,12 +189,12 @@ int check_player_valid_pos(t_data *data)
 		j = 0;
 		while (data->map[i][j])
 		{
-			printf("data->hright = %d\n", data->height);
 			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || data->map[i][j] == 'E' || data->map[i][j] == 'W')
 			{
 				data->player_x = i;
 				data->player_y = j;
 				count++;
+				printf("Count = %d\n", count);
 			}
 			j++;
 		}
@@ -271,7 +271,6 @@ int	parse_textures(t_data *data, int *i)
 		else if (!ft_strcmp(split[0], "C"))
 		{
 			data->first_line_in_map++;
-			printf("first line in map = %d\n", data->first_line_in_map);
 			data->color_c = handle_colors(split[1]);
 			data->c = ft_strdup(split[1]);
 			data->c_key = ft_strdup(split[0]);
@@ -283,18 +282,27 @@ int	parse_textures(t_data *data, int *i)
 
 		line = get_next_line(fd);
 		j++;
+		
 	}
 	close(fd);
 	j = 0;
 	return (1);
 }
 
-// int check_player_pos(t_data *data)
-// {
-// 	int i = 0;
-// 	int j = 0;
-// 	while()
-// }
+void first_line_in_map(t_data *data)
+{
+	int i = data->first_line_in_map;
+	while (data->map[i])
+	{
+		if (!check_empty(data->map[i]))
+		{
+			data->first_line_in_map++;
+			i++;
+		}
+		else 
+			i++;
+	}
+}
 
 int	is_valide2(char c)
 {
@@ -308,6 +316,33 @@ int	is_valide(char c)
 {
 	if (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (1);
+	return (0);
+}
+
+int first_and_last_lines_check(t_data *data)
+{
+	int i = data->first_line_in_map - 1;
+	int j = 0;
+	while (data->map[i][j])
+	{
+		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
+		{
+			ft_putstr_fd("Error\nMap is not clossssssssssed\n", 2);
+			return (1);
+		}
+		j++;
+	}
+	i = data->height - 1;
+	j = 0;
+	while (data->map[i][j])
+	{
+		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
+		{
+			ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
+			return (1);
+		}
+		j++;
+	}
 	return (0);
 }
 
@@ -440,6 +475,16 @@ int	main(int ac, char *av[])
 	i = 0;
 	parse_textures(data, &i);
 	if (check_xpm(data))
+	{
+		for (int k = 0; k < data->height; k++)
+			free(data->map[k]);
+		free(data->map);
+		free(data);
+		return (1);
+	}
+	first_line_in_map(data);
+	printf("first line in map = %d\n", data->first_line_in_map);
+	if(first_and_last_lines_check(data))
 	{
 		for (int k = 0; k < data->height; k++)
 			free(data->map[k]);
