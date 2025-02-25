@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/25 18:49:51 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/25 19:00:17 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -514,7 +514,11 @@ int	main(int ac, char *av[])
 	// 	return (1);
 	// }
 	i = 0;
-
+	// while(data->map[i])
+	// {
+	// 	printf("%s\n", data->map[i]);
+	// 	i++;
+	// }
 	printf("NO = %s\n", data->no);
 	printf("SO = %s\n", data->so);
 	printf("WE = %s\n", data->we);
