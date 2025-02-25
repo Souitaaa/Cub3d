@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/25 00:48:18 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/25 02:25:50 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,6 +325,11 @@ int first_and_last_lines_check(t_data *data)
 	int j = 0;
 	while (data->map[i][j])
 	{
+		// if (check_empty(data->map[i]))
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
 		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
 			ft_putstr_fd("Error\nMap is not clossssssssssed\n", 2);
@@ -336,6 +341,11 @@ int first_and_last_lines_check(t_data *data)
 	j = 0;
 	while (data->map[i][j])
 	{
+		// if (check_empty(data->map[i]))
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
 		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
 			ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
