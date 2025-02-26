@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/25 19:00:17 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/26 23:23:27 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,12 @@ int	count_line(t_data *data)
 	close(fd);
 	return (line_count);
 }
+int one_or_zero(char c)
+{
+	if ((c != '1' && c != '0'))
+		return (1);
+	return (0);
+}
 
 int check_player_valid_pos(t_data *data)
 {
@@ -193,6 +199,12 @@ int check_player_valid_pos(t_data *data)
 			{
 				data->player_x = i;
 				data->player_y = j;
+				printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j ]);
+				// if (one_or_zero(data->map[i + 1][j]) || one_or_zero(data->map[i - 1][j]) || one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
+				// {
+				// 	ft_putstr_fd("Error\nInvalid player position\n", 2);
+				// 	exit(1);
+				// }
 				count++;
 				printf("Count = %d\n", count);
 			}
@@ -219,6 +231,11 @@ int	parse_textures(t_data *data, int *i)
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
 	line = get_next_line(fd);
+	if (!line)
+	{
+		ft_putstr_fd("Error\nInvalid file\n", 2);
+		exit(1);
+	}
 	j = 0;
 	while (line)
 	{
@@ -350,6 +367,7 @@ int first_and_last_lines_check(t_data *data)
 		// }
 		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
+			printf("data->map[i][j]111 = %c\n", data->map[i][j]);
 			ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
 			return (1);
 		}
@@ -505,6 +523,7 @@ int	main(int ac, char *av[])
 		return (1);
 	}
 	check_player_valid_pos(data);
+	// check_player_pos(data);
 	// if (check_player_pos(data))
 	// {
 	// 	for (int k = 0; k < data->height; k++)
