@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/26 23:23:27 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/27 16:43:44 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,12 +199,12 @@ int check_player_valid_pos(t_data *data)
 			{
 				data->player_x = i;
 				data->player_y = j;
-				printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j ]);
-				// if (one_or_zero(data->map[i + 1][j]) || one_or_zero(data->map[i - 1][j]) || one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
-				// {
-				// 	ft_putstr_fd("Error\nInvalid player position\n", 2);
-				// 	exit(1);
-				// }
+				// printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j ]);
+				if (one_or_zero(data->map[i + 1][j]) || one_or_zero(data->map[i - 1][j]) || one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
+				{
+					ft_putstr_fd("Error\nInvalid player position\n", 2);
+					exit(1);
+				}
 				count++;
 				printf("Count = %d\n", count);
 			}
@@ -247,10 +247,11 @@ int	parse_textures(t_data *data, int *i)
 			data->first_line_in_map++;
 			continue ;
 		}
+		if (j == 6)
+			break ;
 		if (count_split(split) != 2)
 		{
-			if (j == 6)
-				break ;
+			printf("split[0] = %s\n", split[0]);
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
 			exit(1);
 		}
