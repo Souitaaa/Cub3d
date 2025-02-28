@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/24 16:33:03 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/28 04:51:35 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_data
     int player_x;
     int player_y;
     int first_line_in_map;
+    int last_line_in_map;
 }   t_data;
 
 
@@ -67,6 +68,7 @@ char	*ft_strrchr(char *s, int c);
 long	ft_atoi(char *str);
 int	create_trgb(int t, int r, int g, int b);
 char	**ft_split00(char *s);
+int	ft_isalnum(int c);
 
 
 #endif

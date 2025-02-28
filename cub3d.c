@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/27 16:43:44 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/28 05:08:02 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,23 @@ int	check_empty(char *line)
 	}
 	return (0);
 }
+
+int last_line(t_data *data)
+{
+	int i = data->height - 1;
+	while (i >= 0)
+	{
+		if (check_empty(data->map[i]))
+		{
+			data->last_line_in_map = i;
+			// printf("last line in map = %d\n", data->last_line_in_map);
+			break;
+		}
+		i--;
+	}
+	return (1);
+}
+
 
 
 int	count_split(char **split)
@@ -206,7 +223,7 @@ int check_player_valid_pos(t_data *data)
 					exit(1);
 				}
 				count++;
-				printf("Count = %d\n", count);
+				// printf("Count = %d\n", count);
 			}
 			j++;
 		}
@@ -220,6 +237,37 @@ int check_player_valid_pos(t_data *data)
 	return 0;
 }
 
+// int check_valid_map(t_data *data)
+// {
+// 	int i = 0;
+// 	int count = 0;
+// 	int len = 0;
+// 	while(data->map[i])
+// 	{
+// 	// 	if (data->map[i])
+// 	// 	{
+// 	// 		printf("data->height = %d\n", data->height);
+// 	// 		printf("data->map[i] = %s\n", data->map[i]);
+// 	// 		exit(1);
+// 	// 	}
+// 		if(!(check_empty(data->map[i])))
+// 		{
+// 			len++;
+// 			i++;
+// 			continue;
+// 		}
+// 		else
+// 			count++;
+// 		i++;
+// 	}
+// 	if(count <= 0)
+// 	{
+// 		ft_putstr_fd("Error\nInvaleid map\n", 2);
+// 		exit(1);
+// 	}
+// 	return 0;
+// }
+
 int	parse_textures(t_data *data, int *i)
 {
 	int		fd;
@@ -231,7 +279,7 @@ int	parse_textures(t_data *data, int *i)
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
 	line = get_next_line(fd);
-	if (!line)
+	if (!line || !check_empty(line))
 	{
 		ft_putstr_fd("Error\nInvalid file\n", 2);
 		exit(1);
@@ -366,9 +414,8 @@ int first_and_last_lines_check(t_data *data)
 		// 	i++;
 		// 	continue ;
 		// }
-		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
+		if (i <= data->last_line_in_map && data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
-			printf("data->map[i][j]111 = %c\n", data->map[i][j]);
 			ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
 			return (1);
 		}
@@ -504,7 +551,10 @@ int	main(int ac, char *av[])
 		i++;
 	}
 	i = 0;
+	last_line(data);
+	// printf("last line in map = %d\n", data->last_line_in_map);
 	parse_textures(data, &i);
+	// check_valid_map(data);
 	if (check_xpm(data))
 	{
 		for (int k = 0; k < data->height; k++)
@@ -514,7 +564,9 @@ int	main(int ac, char *av[])
 		return (1);
 	}
 	first_line_in_map(data);
-	printf("first line in map = %d\n", data->first_line_in_map);
+	// printf("dkhelt hna\n");
+	// exit(0);
+	// printf("first line in map = %d\n", data->first_line_in_map);
 	if(first_and_last_lines_check(data))
 	{
 		for (int k = 0; k < data->height; k++)
