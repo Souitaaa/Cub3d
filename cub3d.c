@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/28 05:08:02 by csouita          ###   ########.fr       */
+/*   Updated: 2025/02/28 23:37:38 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_empty(char *line)
 	int	i;
 
 	i = 0;
+	if (!line)
+		return (0);
 	while (line[i])
 	{
 		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\v'
@@ -216,7 +218,7 @@ int check_player_valid_pos(t_data *data)
 			{
 				data->player_x = i;
 				data->player_y = j;
-				// printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j ]);
+				printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j ]);
 				if (one_or_zero(data->map[i + 1][j]) || one_or_zero(data->map[i - 1][j]) || one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
 				{
 					ft_putstr_fd("Error\nInvalid player position\n", 2);
@@ -268,6 +270,21 @@ int check_player_valid_pos(t_data *data)
 // 	return 0;
 // }
 
+
+int count_len(t_data * data)
+{
+	int i = 0;
+	int count = 0;
+	while(data->map[i])
+	{
+		if(check_empty(data->map[i]))
+			count += ft_strlen(data->map[i]);
+		i++;
+	}
+	printf("count = %d\n", count);
+	return count;
+}
+
 int	parse_textures(t_data *data, int *i)
 {
 	int		fd;
@@ -279,7 +296,7 @@ int	parse_textures(t_data *data, int *i)
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
 	line = get_next_line(fd);
-	if (!line || !check_empty(line))
+	if ((!line && data->height == 0) || count_len(data) == 0)
 	{
 		ft_putstr_fd("Error\nInvalid file\n", 2);
 		exit(1);
@@ -407,20 +424,18 @@ int first_and_last_lines_check(t_data *data)
 	}
 	i = data->height - 1;
 	j = 0;
-	while (data->map[i][j])
-	{
-		// if (check_empty(data->map[i]))
-		// {
-		// 	i++;
-		// 	continue ;
-		// }
-		if (i <= data->last_line_in_map && data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
-		{
-			ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
-			return (1);
-		}
-		j++;
-	}
+	// while (data->map[i][j])
+	// {
+	// 	if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || data->map[i][j] != ((data->map[i][j] >= 9 && data->map[i][j] <= 13))))
+	// 	{
+	// 		printf("i = %d\n", i);
+	// 		printf("j = %d\n", j);
+	// 		printf("data->map[i][j] = %c\n", data->map[i][j]);
+	// 		ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
+	// 		return (1);
+	// 	}
+	// 	j++;
+	// }
 	return (0);
 }
 
@@ -513,6 +528,7 @@ int	main(int ac, char *av[])
 	}
 	i = 0;
 	j = 0;
+	// count_len(data);
 	while (i < data->height)
 	{
 		if (parse_element(data, &i))
@@ -521,9 +537,11 @@ int	main(int ac, char *av[])
 			continue ;
 		}
 		j = 0;
+		
 		while (data->map[i][j])
 		{
-			if (data->map[i][j] == '0')
+			if (data->map[i][j] == '0' && i > 0 && i < data->height - 1 && j > 0
+				&& j < (int)ft_strlen(data->map[i]) - 1)
 			{
 				if (!check_empty(data->map[i + 1]) || !check_empty(data->map[i
 						- 1]) || !check_empty(data->map[i] + j + 1)
@@ -567,6 +585,7 @@ int	main(int ac, char *av[])
 	// printf("dkhelt hna\n");
 	// exit(0);
 	// printf("first line in map = %d\n", data->first_line_in_map);
+	// printf("first and last lines check = %d\n", first_and_last_lines_check(data));
 	if(first_and_last_lines_check(data))
 	{
 		for (int k = 0; k < data->height; k++)
