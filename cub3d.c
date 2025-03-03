@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/02 20:45:24 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/02 21:03:55 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,12 @@ int check_player_valid_pos(t_data *data)
 		{
 			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || data->map[i][j] == 'E' || data->map[i][j] == 'W')
 			{
+				if (i == data->last_line_in_map || i == data->first_line_in_map)
+				{
+					ft_putstr_fd("error on first/last line in map (player error)\n" ,2);
+					exit(1);
+				}
+				
 				data->player_x = i;
 				data->player_y = j;
 				printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j]);
@@ -427,6 +433,23 @@ int first_and_last_lines_check(t_data *data)
 	return (0);
 }
 
+// int check_zero(t_data *data)
+// {
+// 	int i = 0;
+// 	int j = 0;
+// 	while(data->map[i])
+// 	{
+// 		j = 0;
+// 		while(data->map[i][j])
+// 		{
+// 			if(data->map[i][j] == '0')
+// 			(
+// 				zero_check(data->map[i][j]);
+// 			)
+// 		}
+// 	}
+// }
+
 int main(int ac, char *av[])
 {
 	int i;
@@ -522,7 +545,7 @@ int main(int ac, char *av[])
 
 	i = 0;
 	j = 0;
-	while (i < data->height && data->map[i])
+	while (i < data->height)
 	{
 		if (parse_element(data, &i))
 		{
@@ -530,40 +553,27 @@ int main(int ac, char *av[])
 			continue;
 		}
 		j = 0;
-
 		while (data->map[i][j])
 		{
-			if (data->map[i][j] == '0' && i > 0 && i < data->height - 1 && j > 0 && j < (int)ft_strlen(data->map[i]) - 1)
+			if (data->map[i][j] == '0')
 			{
-				if (i + 1 >= data->height || i - 1 < 0 || !data->map[i + 1] || !data->map[i - 1])
+				if (!check_empty(data->map[i + 1]) || !check_empty(data->map[i - 1]) 
+					||
+					!check_empty(data->map[i] + j + 1)
+					|| !check_empty(data->map[i] + j - 1))
 				{
-					ft_putstr_fd("Error\nMap index out of bounds\n", 2);
+					ft_putstr_fd("Error\nMap wwwis not closed\n", 2);
 					exit(1);
 				}
+				if (i == 0 || i == data->height - 1 || j == 0
+					|| j == (int)ft_strlen(data->map[i]) - 1
+					|| !is_valide(data->map[i][j + 1])
+					|| !is_valide(data->map[i][j - 1]) 
+					|| !is_valide(data->map[i
+					+ 1][j]) || !is_valide(data->map[i - 1][j]))
 
-				if (!check_empty(data->map[i + 1]) || !check_empty(data->map[i - 1]) ||
-					j + 1 >= (int)ft_strlen(data->map[i]) || j - 1 < 0 ||
-					!check_empty(data->map[i] + j + 1) || !check_empty(data->map[i] + j - 1))
 				{
-					ft_putstr_fd("Error\nMap is not closed (emptiness check)\n", 2);
-					exit(1);
-				}
-
-				if (j + 1 >= (int)ft_strlen(data->map[i]) || j - 1 < 0 ||
-					i + 1 >= data->height || i - 1 < 0 ||
-					j >= (int)ft_strlen(data->map[i + 1]) || j >= (int)ft_strlen(data->map[i - 1]))
-				{
-					ft_putstr_fd("Error\nMap is not closed (boundary check)\n", 2);
-					for (int k = 0; k < data->height; k++)
-						free(data->map[k]);
-					free(data->map);
-					free(data);
-					return (1); 
-				}
-
-				if (i == 0 || i == data->height - 1 || j == 0 || j == (int)ft_strlen(data->map[i]) - 1 || !is_valide(data->map[i][j + 1]) || !is_valide(data->map[i][j - 1]) || !is_valide(data->map[i + 1][j]) || !is_valide(data->map[i - 1][j]))
-				{
-					ft_putstr_fd("Error\nMap is not closed (validation check)\n", 2);
+					ft_putstr_fd("Error\nMap is not closed\n", 2);
 					for (int k = 0; k < data->height; k++)
 						free(data->map[k]);
 					free(data->map);
