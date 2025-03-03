@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/02 21:03:55 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/03 00:54:31 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,7 +400,7 @@ int is_valide(char c)
 
 int first_and_last_lines_check(t_data *data)
 {
-	int i = data->first_line_in_map - 1;
+	int i = data->first_line_in_map;
 	int j = 0;
 	while (data->map[i][j])
 	{
@@ -409,8 +409,13 @@ int first_and_last_lines_check(t_data *data)
 		// 	i++;
 		// 	continue ;
 		// }
-		if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
+		printf("i = %d\n",i);
+		printf("first line == %d\n", data->first_line_in_map);
+		if (data->map[i][j] != '1' && (data->map[i][j] != ' '  && (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
+			printf("str =-----%s\n",data->map[i]);
+			printf("i = %d\n",i);
+			printf("data->map[i][j] ==%c\n",data->map[i][j]);
 			ft_putstr_fd("Error\nMap is not clossssssssssed\n", 2);
 			return (1);
 		}
