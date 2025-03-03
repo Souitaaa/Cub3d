@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/03 00:54:31 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/03 19:54:49 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int last_line(t_data *data)
 		if (check_empty(data->map[i]))
 		{
 			data->last_line_in_map = i;
-			// printf("last line in map = %d\n", data->last_line_in_map);
 			break;
 		}
 		i--;
@@ -211,14 +210,12 @@ int check_player_valid_pos(t_data *data)
 				
 				data->player_x = i;
 				data->player_y = j;
-				printf("data->map[i][j - 1] = %c\n", data->map[i - 1][j]);
 				if (one_or_zero(data->map[i + 1][j]) || one_or_zero(data->map[i - 1][j]) || one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
 				{
 					ft_putstr_fd("Error\nInvalid player position\n", 2);
 					exit(1);
 				}
 				count++;
-				// printf("Count = %d\n", count);
 			}
 			j++;
 		}
@@ -231,37 +228,6 @@ int check_player_valid_pos(t_data *data)
 	}
 	return 0;
 }
-
-// int check_valid_map(t_data *data)
-// {
-// 	int i = 0;
-// 	int count = 0;
-// 	int len = 0;
-// 	while(data->map[i])
-// 	{
-// 	// 	if (data->map[i])
-// 	// 	{
-// 	// 		printf("data->height = %d\n", data->height);
-// 	// 		printf("data->map[i] = %s\n", data->map[i]);
-// 	// 		exit(1);
-// 	// 	}
-// 		if(!(check_empty(data->map[i])))
-// 		{
-// 			len++;
-// 			i++;
-// 			continue;
-// 		}
-// 		else
-// 			count++;
-// 		i++;
-// 	}
-// 	if(count <= 0)
-// 	{
-// 		ft_putstr_fd("Error\nInvaleid map\n", 2);
-// 		exit(1);
-// 	}
-// 	return 0;
-// }
 
 int count_len(t_data *data)
 {
@@ -277,7 +243,6 @@ int count_len(t_data *data)
 			count += ft_strlen(data->map[i]);
 		i++;
 	}
-	// printf("count = %d\n", count);
 	return count;
 }
 
@@ -312,7 +277,6 @@ int parse_textures(t_data *data, int *i)
 			break;
 		if (count_split(split) != 2)
 		{
-			printf("split[0] = %s\n", split[0]);
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
 			exit(1);
 		}
@@ -404,18 +368,9 @@ int first_and_last_lines_check(t_data *data)
 	int j = 0;
 	while (data->map[i][j])
 	{
-		// if (check_empty(data->map[i]))
-		// {
-		// 	i++;
-		// 	continue ;
-		// }
-		printf("i = %d\n",i);
-		printf("first line == %d\n", data->first_line_in_map);
+	
 		if (data->map[i][j] != '1' && (data->map[i][j] != ' '  && (!(data->map[i][j] >= 9 && data->map[i][j] <= 13))) && data->map[i][j] != '\n')
 		{
-			printf("str =-----%s\n",data->map[i]);
-			printf("i = %d\n",i);
-			printf("data->map[i][j] ==%c\n",data->map[i][j]);
 			ft_putstr_fd("Error\nMap is not clossssssssssed\n", 2);
 			return (1);
 		}
@@ -423,37 +378,9 @@ int first_and_last_lines_check(t_data *data)
 	}
 	i = data->height - 1;
 	j = 0;
-	// while (data->map[i][j])
-	// {
-	// 	if (data->map[i][j] != '1' && (data->map[i][j] != ' ' || data->map[i][j] != ((data->map[i][j] >= 9 && data->map[i][j] <= 13))))
-	// 	{
-	// 		printf("i = %d\n", i);
-	// 		printf("j = %d\n", j);
-	// 		printf("data->map[i][j] = %c\n", data->map[i][j]);
-	// 		ft_putstr_fd("Error\nMap is not clddddosed\n", 2);
-	// 		return (1);
-	// 	}
-	// 	j++;
-	// }
+	
 	return (0);
 }
-
-// int check_zero(t_data *data)
-// {
-// 	int i = 0;
-// 	int j = 0;
-// 	while(data->map[i])
-// 	{
-// 		j = 0;
-// 		while(data->map[i][j])
-// 		{
-// 			if(data->map[i][j] == '0')
-// 			(
-// 				zero_check(data->map[i][j]);
-// 			)
-// 		}
-// 	}
-// }
 
 int main(int ac, char *av[])
 {
@@ -631,12 +558,11 @@ int main(int ac, char *av[])
 	printf("color_f = %d\n", data->color_f);
 	printf("color_c = %d\n", data->color_c);
 
-	// Free allocated memory
+
 	for (int k = 0; k < data->height; k++)
 		free(data->map[k]);
 	free(data->map);
 
-	// Free texture paths
 	if (data->no)
 		free(data->no);
 	if (data->so)
@@ -650,7 +576,6 @@ int main(int ac, char *av[])
 	if (data->c)
 		free(data->c);
 
-	// Free texture keys
 	if (data->no_key)
 		free(data->no_key);
 	if (data->so_key)
