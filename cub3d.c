@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/03 19:54:49 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/03 21:14:14 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,23 +246,37 @@ int count_len(t_data *data)
 	return count;
 }
 
-int parse_textures(t_data *data, int *i)
+void check_valid_file(char *line , t_data *data)
+{
+	if ((!line && data->height == 0) || count_len(data) == 0)
+	{
+		ft_putstr_fd("Error\nInvalid file\n", 2);
+		exit(1);
+	}
+}
+
+void empty_textures(t_data *data , char *line)
+{
+	
+}
+
+int parse_textures(t_data *data)
 {
 	int fd;
 	char **split;
 	char *line;
 	int j;
 
-	(void)i;
+	j = 0;
 	fd = open(data->file, O_RDONLY);
 	split = malloc(sizeof(char *) * (data->height + 1));
-	line = get_next_line(fd);
-	if ((!line && data->height == 0) || count_len(data) == 0)
+	if (!split)
 	{
-		ft_putstr_fd("Error\nInvalid file\n", 2);
+		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
 		exit(1);
 	}
-	j = 0;
+	line = get_next_line(fd);
+	check_valid_file(line, data);
 	while (line)
 	{
 		split = ft_split00(line);
@@ -274,7 +288,11 @@ int parse_textures(t_data *data, int *i)
 			continue;
 		}
 		if (j == 6)
+		{
+			free(split);
+			free(line);
 			break;
+		}
 		if (count_split(split) != 2)
 		{
 			ft_putstr_fd("Error\nInvalssssid texture\n", 2);
@@ -382,44 +400,43 @@ int first_and_last_lines_check(t_data *data)
 	return (0);
 }
 
-int main(int ac, char *av[])
+void ft_check_file_path(t_data *data , int ac , char *av[])
 {
-	int i;
-	t_data *data;
-	int len;
 	int fd;
-	char *line;
-	int j;
-
-	i = 0;
-	data = malloc(sizeof(t_data));
+	
 	if (!data)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
-		return (1);
+		exit(1);
 	}
-	ft_memset(data, 0, sizeof(t_data));
 	if (ac != 2)
 	{
 		ft_putstr_fd("Error\nInvalid number of arguments\n", 2);
 		free(data);
-		return (1);
+		exit(1);
 	}
 	data->file = av[1];
-	len = ft_strlen(av[1]);
+	int len = ft_strlen(av[1]);
 	if (len < 4 || av[1][len - 1] != 'b' || av[1][len - 2] != 'u' || av[1][len - 3] != 'c' || av[1][len - 4] != '.')
 	{
 		ft_putstr_fd("Error\nInvalid path extension\n", 2);
 		free(data);
-		return (1);
+		exit(1);
 	}
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 	{
 		ft_putstr_fd("Error\nInvalid file\n", 2);
 		free(data);
-		return (1);
+		exit(1);
 	}
+}
+
+void map_height(t_data *data , char *av[])
+{
+	int i = 0;
+	char *line;
+	int fd = open(av[1], O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -428,15 +445,20 @@ int main(int ac, char *av[])
 		line = get_next_line(fd);
 	}
 	data->height = i;
-	i = 0;
-	close(fd);
+}
+
+void cp_map_array(t_data *data , char *av[])
+{
+	char *line;
+	int i = 0;
+	int fd;
 	fd = open(av[1], O_RDONLY);
 	data->map = malloc(sizeof(char *) * (data->height + 1));
 	if (!data->map)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
 		free(data);
-		return (1);
+		exit(1);
 	}
 	line = get_next_line(fd);
 	while (line)
@@ -448,9 +470,12 @@ int main(int ac, char *av[])
 	}
 	data->map[i] = NULL;
 	close(fd);
+}
 
-	i = 0;
-	j = 0;
+void check_invalid_character(t_data *data)
+{
+	int i = 0;
+	int j = 0;
 	while (i < data->height && data->map[i])
 	{
 		if (parse_element(data, &i))
@@ -468,15 +493,19 @@ int main(int ac, char *av[])
 					free(data->map[k]);
 				free(data->map);
 				free(data);
-				return (1);
+				exit(1);
 			}
 			j++;
 		}
 		i++;
 	}
 
-	i = 0;
-	j = 0;
+}
+
+void check_boundaries(t_data *data)
+{
+	int i = 0;
+	int j = 0;
 	while (i < data->height)
 	{
 		if (parse_element(data, &i))
@@ -510,16 +539,33 @@ int main(int ac, char *av[])
 						free(data->map[k]);
 					free(data->map);
 					free(data);
-					return (1);
+					exit(1);
 				}
 			}
 			j++;
 		}
 		i++;
 	}
+}
+
+int main(int ac, char *av[])
+{
+	int i;
+	t_data *data;
+	// int j;
+
+	i = 0;
+	// j = 0;
+	data = malloc(sizeof(t_data));
+	ft_memset(data, 0, sizeof(t_data));
+	ft_check_file_path(data, ac, av);
+	map_height(data, av);
+	cp_map_array(data, av);
+	check_invalid_character(data);
+	check_boundaries(data);
 
 	last_line(data);
-	parse_textures(data, &i);
+	parse_textures(data);
 
 	if (check_xpm(data))
 	{
