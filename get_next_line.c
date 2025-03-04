@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 #include "cub3d.h"
-
+#include "get_next_line.h"
 
 char	*all_buffer(char *str, int fd)
 {

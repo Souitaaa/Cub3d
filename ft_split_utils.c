@@ -1,19 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   ft_split_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 17:03:20 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/27 17:03:35 by csouita          ###   ########.fr       */
+/*   Created: 2025/03/04 01:20:06 by csouita           #+#    #+#             */
+/*   Updated: 2025/03/04 01:20:29 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_isalnum(int c)
+int	ft_is_void(char c)
 {
-	return ((c >= '0' && c <= '9') || ((c >= 'a' && c <= 'z') || (c >= 'A'
-				&& c <= 'Z')));
+	return (c == 32 || (c >= 9 && c <= 13));
+}
+
+int	handle_quotes3(char *str, int *i, char quote_char)
+{
+	(*i)++;
+	while (str[*i] && str[*i] != quote_char)
+		(*i)++;
+	if (str[*i] && str[*i] == quote_char)
+		(*i)++;
+	return (1);
+}
+
+char	**freefun00(char **p, int j)
+{
+	while (j >= 0)
+	{
+		free(p[j]);
+		j--;
+	}
+	free(p);
+	return (NULL);
 }

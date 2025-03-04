@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/28 04:51:35 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/04 01:21:14 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,34 @@ char	*ft_strrchr(char *s, int c);
 long	ft_atoi(char *str);
 int	create_trgb(int t, int r, int g, int b);
 char	**ft_split00(char *s);
-int	ft_isalnum(int c);
-
+int	parse_textures(t_data *data);
+int	check_xpm(t_data *data);
+void	set_no_texture(t_data *data, char **split);
+void	set_so_texture(t_data *data, char **split);
+void	set_we_texture(t_data *data, char **split);
+void	set_ea_texture(t_data *data, char **split);
+void	set_floor_and_ceiling_color(t_data *data, char **split , int i);
+int	    handle_colors(char *line);
+int	    count_split(char **split);
+void	ft_error(char *str);
+void	process_texture_data(t_data *data, char *line, int *j);
+void	process_texture_line(t_data *data, char **split);
+void	validate_texture_format(char **split);
+void	check_invalid_character(t_data *data);
+void	check_boundaries(t_data *data);
+int	check_empty(char *line);
+int	parse_element(t_data *data, int *i);
+int	count_len(t_data *data);
+int	check_player_valid_pos(t_data *data);
+int	handle_colors(char *line);
+void	ft_check_file_path(t_data *data, int ac, char *av[]);
+void	map_height(t_data *data, char *av[]);
+void	cp_map_array(t_data *data, char *av[]);
+int	    last_line(t_data *data);
+void	first_line_in_map(t_data *data);
+int	    first_and_last_lines_check(t_data *data);
+char	**freefun00(char **p, int j);
+int	handle_quotes3(char *str, int *i, char quote_char);
+int	ft_is_void(char c);
 
 #endif

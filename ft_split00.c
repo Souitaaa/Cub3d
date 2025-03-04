@@ -6,42 +6,11 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 23:07:48 by csouita           #+#    #+#             */
-/*   Updated: 2025/02/23 17:32:11 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/04 01:20:23 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-
-int	ft_is_void(char c)
-{
-	return (c == 32 || (c >= 9 && c <= 13));
-}
-
-int	handle_quotes3(char *str, int *i, char quote_char)
-{
-	(*i)++;
-	while (str[*i] && str[*i] != quote_char)
-		(*i)++;
-	if (str[*i] && str[*i] == quote_char)
-		(*i)++;
-	return (1);
-}
-
-
-
-char	**freefun00(char **p, int j)
-{
-	while (j >= 0)
-	{
-		free(p[j]);
-		j--;
-	}
-	free(p);
-	return (NULL);
-}
-
-
 
 int	words_nbr00(char *str)
 {
