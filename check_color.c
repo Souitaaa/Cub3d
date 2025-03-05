@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_trgb.c                                      :+:      :+:    :+:   */
+/*   check_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 21:53:32 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:00:35 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/05 00:16:47 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int	handle_colors(char *line)
 			ft_atoi(split[2]));
 	if (color == -1)
 		ft_error("Error\nInvalid color\n");
+	free(split);
 	return (color);
 }

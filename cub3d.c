@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:27:43 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/05 00:15:57 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,9 @@ int	main(int ac, char *av[])
 	if (first_and_last_lines_check(data))
 		free_memory(data);
 	check_player_valid_pos(data);
+	for(int i = 0; i <= data->height; i++)
+		free(data->map[i]);
+	free(data->map);
+	free(data);
 	return (0);
 }
