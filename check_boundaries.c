@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 00:36:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 00:59:40 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/07 23:59:20 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int	check_neighboring_cells(t_data *data, int i, int j)
 
 void	check_cell_boundaries(t_data *data, int i, int j)
 {
-	int	k;
-
-	k = 0;
 	if (data->map[i][j] == '0')
 	{
 		if (!check_neighboring_cells(data, i, j))
@@ -67,15 +64,8 @@ void	check_cell_boundaries(t_data *data, int i, int j)
 			if (i != 0 && i != data->height - 1 && j != 0
 				&& j != (int)ft_strlen(data->map[i]) - 1)
 			{
-				while (k < data->height)
-				{
-					free(data->map[k]);
-					k++;
-				}
-				free(data->map);
-				free(data);
+				free_memory(data);
 			}
-			exit(1);
 		}
 	}
 }

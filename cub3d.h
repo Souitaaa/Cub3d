@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:21:14 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/08 00:36:49 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,16 @@ int	create_trgb(int t, int r, int g, int b);
 char	**ft_split00(char *s);
 int	parse_textures(t_data *data);
 int	check_xpm(t_data *data);
-void	set_no_texture(t_data *data, char **split);
-void	set_so_texture(t_data *data, char **split);
-void	set_we_texture(t_data *data, char **split);
-void	set_ea_texture(t_data *data, char **split);
-void	set_floor_and_ceiling_color(t_data *data, char **split , int i);
+int	set_no_texture(t_data *data, char **split);
+int	set_so_texture(t_data *data, char **split);
+int	set_we_texture(t_data *data, char **split);
+int	set_ea_texture(t_data *data, char **split);
+int	set_floor_and_ceiling_color(t_data *data, char **split , int i);
 int	    handle_colors(char *line);
 int	    count_split(char **split);
 void	ft_error(char *str);
 void	process_texture_data(t_data *data, char *line, int *j);
 void	process_texture_line(t_data *data, char **split);
-void	validate_texture_format(char **split);
 void	check_invalid_character(t_data *data);
 void	check_boundaries(t_data *data);
 int	check_empty(char *line);
@@ -97,5 +96,9 @@ int	    first_and_last_lines_check(t_data *data);
 char	**freefun00(char **p, int j);
 int	handle_quotes3(char *str, int *i, char quote_char);
 int	ft_is_void(char c);
+int	free_memory(t_data *data);
+void	validate_texture_format(char **split , t_data *data);
+void free_elements(t_data *data);
+
 
 #endif

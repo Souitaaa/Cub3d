@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/05 22:05:32 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/08 00:23:55 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**init_split_memory(t_data *data)
 	if (!split)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
-		exit(1);
+		free_memory(data);
 	}
 	return (split);
 }
@@ -43,8 +43,7 @@ void	cp_map_array(t_data *data, char *av[])
 	if (!data->map)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
-		free(data);
-		exit(1);
+		free_memory(data);
 	}
 	line = get_next_line(fd);
 	while (line)
@@ -77,9 +76,7 @@ int	free_memory(t_data *data)
 int	main(int ac, char *av[])
 {
 	t_data	*data;
-	int		k;
 
-	k = 0;
 	data = malloc(sizeof(t_data));
 	ft_memset(data, 0, sizeof(t_data));
 	ft_check_file_path(data, ac, av);
@@ -87,22 +84,13 @@ int	main(int ac, char *av[])
 	parse_textures(data);
 	if (check_xpm(data))
 	{
-		while (k < data->height)
-		{
-			free(data->map[k]);
-			k++;
-		}
-		free(data->map);
-		free(data);
-		return (1);
+		free_elements(data);
+		free_memory(data);
 	}
 	first_line_in_map(data);
 	if (first_and_last_lines_check(data))
 		free_memory(data);
 	check_player_valid_pos(data);
-	for(int i = 0; i <= data->height; i++)
-		free(data->map[i]);
-	free(data->map);
-	free(data);
+	free_memory(data);
 	return (0);
 }

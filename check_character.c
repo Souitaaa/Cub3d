@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 00:37:56 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:27:19 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/08 00:02:09 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,8 @@ int	is_valide2(char c)
 
 void	handle_invalid_character_error(t_data *data)
 {
-	int	k;
-
-	k = 0;
 	ft_putstr_fd("Error\nInvalid character in map\n", 2);
-	while (k < data->height)
-	{
-		free(data->map[k]);
-		k++;
-	}
-	free(data->map);
-	free(data);
-	exit(1);
+	free_memory(data);
 }
 
 void	check_invalid_character(t_data *data)

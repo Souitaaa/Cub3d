@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 00:40:39 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:03:28 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/08 00:35:25 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,33 @@ void	check_valid_file(char *line, t_data *data)
 	if ((!line && data->height == 0) || count_len(data) == 0)
 	{
 		ft_putstr_fd("Error\nInvalid file\n", 2);
-		exit(1);
+		free_elements(data);
+		free_memory(data);
 	}
 }
 
-void	validate_texture_format(char **split)
+void	validate_texture_format(char **split, t_data *data)
 {
 	if (count_split(split) != 2)
 	{
 		ft_putstr_fd("Error\nInvalid texture\n", 2);
-		exit(1);
+		free_elements(data);
+		free_memory(data);
+	}
+}
+
+void check_free(t_data *data , int flag)
+{
+	if (flag)
+	{
+		free_elements(data);
+		free_memory(data);
 	}
 }
 
 void	process_texture_line(t_data *data, char **split)
 {
-	validate_texture_format(split);
+	validate_texture_format(split, data);
 	if (!ft_strcmp(split[0], "NO"))
 		set_no_texture(data, split);
 	else if (!ft_strcmp(split[0], "SO"))

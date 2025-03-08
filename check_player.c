@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 00:57:19 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/04 01:17:16 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/08 00:18:20 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	validate_player_position(t_data *data, int i, int j, int *count)
 	if (i == data->last_line_in_map || i == data->first_line_in_map)
 	{
 		ft_putstr_fd("error on first/last line in map (player error)\n", 2);
-		exit(1);
+		free_elements(data);
+		free_memory(data);
 	}
 	data->player_x = i;
 	data->player_y = j;
@@ -32,7 +33,8 @@ void	validate_player_position(t_data *data, int i, int j, int *count)
 		|| one_or_zero(data->map[i][j + 1]) || one_or_zero(data->map[i][j - 1]))
 	{
 		ft_putstr_fd("Error\nInvalid player position\n", 2);
-		exit(1);
+		free_elements(data);
+		free_memory(data);
 	}
 	(*count)++;
 }
@@ -59,7 +61,8 @@ int	check_player_valid_pos(t_data *data)
 	if (count != 1)
 	{
 		ft_putstr_fd("Error\nInvalid player position\n", 2);
-		exit(1);
+		free_elements(data);
+		free_memory(data);
 	}
 	return (0);
 }
