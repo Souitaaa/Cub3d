@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/14 19:42:08 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/15 23:13:30 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 # include <unistd.h>
 
 # define CUB_SIZE 32
-# define FOV 120
-# define WIDTH 32 * 15
-# define HEIGHT 32 * 11
+# define NUM_LARGE 20
+# define FOV 60
+# define WIDTH 32 * 14
+# define HEIGHT 32 * 7
 # define NAME "\e[1;34mCub3D\e[0m"
 # define ERROR "\e[1;31mError\e[0m"
 
@@ -72,6 +73,20 @@ typedef struct s_player
 	double			turn_speed;
 }					t_player;
 
+typedef	struct s_ray
+{
+	double			angle;
+	double			wall_hit_x;
+	double			wall_hit_y;
+	double			distance;
+	int				was_hit_vertical;
+	int				is_ray_facing_down;
+	int				is_ray_facing_up;
+	int				is_ray_facing_right;
+	int				is_ray_facing_left;
+	int				wall_hit_content;
+}					t_ray;
+
 /**
  * @struct s_map
 
@@ -108,19 +123,20 @@ typedef struct s_player
  */
 typedef struct 		s_info
 {
-	int				height;//
-	int				width;//
-	char			*file; //
-	char			*c;//
-	char			*f;//
-	char			*no_key; //
-	char			*so_key;//
-	char			*we_key;//
-	char			*ea_key;//
-	char			*c_key;//
-	char			*f_key;//
-	int				first_line_in_map;//
-	int				last_line_in_map;//
+	int				height;
+	int				width;
+	char			*file;
+	char			*c;
+	char			*f;
+	char			*no_key;
+	char			*so_key;
+	char			*we_key;
+	char			*ea_key;
+	char			*c_key;
+	char			*f_key;
+	int				first_line_in_map;
+	int				last_line_in_map;
+	int 			boudaries_width;
 }					t_info;
 
 typedef struct s_map
@@ -158,6 +174,8 @@ typedef struct s_mlx
 	void			*instance;
 	void			*win;
 	struct s_img	image;
+	int				win_width;
+	int				win_height;
 }					t_mlx;
 
 typedef struct s_data
@@ -171,11 +189,18 @@ typedef struct s_data
 // @addindex main.c
 t_data				*get_data(void);
 
+// @addindex parsing/check_boundaries_utils.c
+void				cp_flkharita(t_map *data);
+
 // @addindex parsing/check_boundaries.c
 void				check_boundaries(t_map *data);
+
+
+// @addindex parsing/check_cell_boundaries.c
+void				check_cell_boundaries(t_map *data, int i, int j);
 int					check_empty(char *line);
 
-//@addindex parsing/check/character.c
+//@addindex parsing/check_character.c
 void				check_invalid_character(t_map *data);
 int					parse_element(t_map *data, int *i);
 
@@ -187,7 +212,7 @@ int					create_trgb(int t, int r, int g, int b);
 // @addindex parsing/check_lines.c
 int					first_and_last_lines_check(t_map *data);
 void				first_line_in_map(t_map *data);
-int					count_len(t_map *data);   
+int					count_len(t_map *data);
 int					last_line(t_map *data);
 
 // @addindex parsing/check_player.c
@@ -195,12 +220,12 @@ int					check_player_valid_pos(t_map *data);
 
 //@addindex parsing/check_textures_2.c
 int					set_floor_and_ceiling_color(t_map *data, char **split, int i);
-	int					set_no_texture(t_map *data, char **split);
-	int					set_ea_texture(t_map *data, char **split);
-	int					set_we_texture(t_map *data, char **split);
-	int					set_so_texture(t_map *data, char **split);
+	int				set_no_texture(t_map *data, char **split);
+	int				set_ea_texture(t_map *data, char **split);
+	int				set_we_texture(t_map *data, char **split);
+	int				set_so_texture(t_map *data, char **split);
 
-// @addindex parsing/check_textures.c
+	// @addindex parsing/check_textures.c
 int					parse_textures(t_map *data);
 void				process_texture_data(t_map *data, char *line, int *j);
 void				process_texture_line(t_map *data, char **split);
@@ -218,25 +243,25 @@ void				map_height(t_map *data, char *av[]);
 int					count_split(char **split);
 
 // @addindex parsing/cub3d.c
-t_map		 		parsing(int ac, char *av[]);
+t_map		 		*parsing(int ac, char *av[]);
 int					free_memory(t_map *data);
 void				cp_map_array(t_map *data, char *av[]);
 void				ft_error(char *str, t_map *data);
-
-//@addindex parsing/get_next_line.c
-char				*get_next_line(int fd);
-void 				cp_flkharita(t_map *data);
-
-// @addindex parsing/ft_split00.c
-char				**ft_split00(char *s);
-char				**freefun00(char **p, int j);
-int					handle_quotes3(char *str, int *i, char quote_char);
-int					ft_is_void(char c);
 
 // @addindex parsing/ft_atoi00.c
 long				ft_atoi00(char *str);
 
 
+// @addindex parsing/ft_split_utils.c
+char				**freefun00(char **p, int j);
+int					handle_quotes3(char *str, int *i, char quote_char);
+int					ft_is_void(char c);
+
+// @addindex parsing/ft_split00.c
+char				**ft_split00(char *s);
+
+//@addindex parsing/get_next_line.c
+char				*get_next_line(int fd);
 
 // @addindex utilities/exit.c
 int					close_program(void);
@@ -244,14 +269,14 @@ int					close_program(void);
 // @addindex utilities/mlx_utils.c
 void				my_put_pixel_to_image(int x, int y, int color);
 
-// @addindex game_element/drawing.c
+// @addindex game_element/_2dmap.c
 void				fillrect(t_point point, int width, int height, int color);
 void				_2dmap(t_map *map);
-void				draw_2dmap(t_data *data);
+void				_2dmap_render(t_data *data);
 void				fillline(t_point from, t_point to, double angle, int color);
 
 // @addindex game_element/player.c
-void				player_init(t_player *player);
+void				player_init(t_data *data);
 void				put_player(t_player *player);
 int					update_player(int keycode);
 int					update_player_release(int keycode);
@@ -261,7 +286,22 @@ double				radtodeg(double rad);
 double				degtorad(double deg);
 double				cal_distance(t_point point1, t_point point2);
 
+// @addindex utilities/print_fts.c
+void				print_map(t_map *data);
+
 // @addindex game_element/check_fts.c
-bool				is_wall(int x, int y);
+bool				is_wall(int x, int y, t_data *data);
+
+// @addindex utilities/no_need.c
+t_map				*fake_map_init(void);
+void				free_map(t_map *map);
+
+// @addindex raycasting/raycasting.c
+t_ray				*raycasting(t_data *data);
+void				ray_render(t_ray *ray, t_data *data);
+void				rays_many_render(t_ray *rays, int num_rays);
+
+// @addindex raycasting/ray_functions.c
+t_ray				ray_create(double angle);
 
 #endif
