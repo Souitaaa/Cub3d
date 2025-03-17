@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:35:09 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/15 23:13:30 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/17 00:36:16 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 # include <unistd.h>
 
 # define CUB_SIZE 32
+# define NUM_LARGE 20
+# define FOV 60
+# define WIDTH 32 * 14
+# define HEIGHT 32 * 7
 # define NUM_LARGE 20
 # define FOV 60
 # define WIDTH 32 * 14
@@ -137,6 +141,8 @@ typedef struct 		s_info
 	int				first_line_in_map;
 	int				last_line_in_map;
 	int 			boudaries_width;
+	int 			player_in_y;
+	int 			player_in_x;
 }					t_info;
 
 typedef struct s_map
@@ -144,8 +150,8 @@ typedef struct s_map
 	t_info			*info;
 	int 			map_width;
 	int 			map_height;
-	char			**map;
-	char 			**kharita;
+	char			**kharita;
+	char 			**map;
 	char			*no;
 	char			*so;
 	char			*we;
@@ -154,9 +160,8 @@ typedef struct s_map
 	int				color_c;
 	int				player_x;
 	int				player_y;
+
 }					t_map;
-
-
 
 typedef struct s_img
 {
@@ -192,14 +197,23 @@ t_data				*get_data(void);
 // @addindex parsing/check_boundaries_utils.c
 void				cp_flkharita(t_map *data);
 
+// @addindex parsing/check_boundaries_utils.c
+void				cp_flkharita(t_map *data);
+
 // @addindex parsing/check_boundaries.c
 void				check_boundaries(t_map *data);
+void 				player_possitions(t_map *data);
+
+
+// @addindex parsing/check_cell_boundaries.c
+void				check_cell_boundaries(t_map *data, int i, int j);
 
 
 // @addindex parsing/check_cell_boundaries.c
 void				check_cell_boundaries(t_map *data, int i, int j);
 int					check_empty(char *line);
 
+//@addindex parsing/check_character.c
 //@addindex parsing/check_character.c
 void				check_invalid_character(t_map *data);
 int					parse_element(t_map *data, int *i);
@@ -213,6 +227,7 @@ int					create_trgb(int t, int r, int g, int b);
 int					first_and_last_lines_check(t_map *data);
 void				first_line_in_map(t_map *data);
 int					count_len(t_map *data);
+int					count_len(t_map *data);
 int					last_line(t_map *data);
 
 // @addindex parsing/check_player.c
@@ -224,7 +239,12 @@ int					set_floor_and_ceiling_color(t_map *data, char **split, int i);
 	int				set_ea_texture(t_map *data, char **split);
 	int				set_we_texture(t_map *data, char **split);
 	int				set_so_texture(t_map *data, char **split);
+	int				set_no_texture(t_map *data, char **split);
+	int				set_ea_texture(t_map *data, char **split);
+	int				set_we_texture(t_map *data, char **split);
+	int				set_so_texture(t_map *data, char **split);
 
+	// @addindex parsing/check_textures.c
 	// @addindex parsing/check_textures.c
 int					parse_textures(t_map *data);
 void				process_texture_data(t_map *data, char *line, int *j);
@@ -244,19 +264,29 @@ int					count_split(char **split);
 
 // @addindex parsing/cub3d.c
 t_map		 		*parsing(int ac, char *av[]);
-int					free_memory(t_map *data);
+t_map		 		*parsing(int ac, char *av[]);
+void				free_memory(t_map *data);
 void				cp_map_array(t_map *data, char *av[]);
 void				ft_error(char *str, t_map *data);
 
 // @addindex parsing/ft_atoi00.c
 long				ft_atoi00(char *str);
 
+// @addindex parsing/ft_atoi00.c
+long				ft_atoi00(char *str);
 
+
+// @addindex parsing/ft_split_utils.c
 // @addindex parsing/ft_split_utils.c
 char				**freefun00(char **p, int j);
 int					handle_quotes3(char *str, int *i, char quote_char);
 int					ft_is_void(char c);
 
+// @addindex parsing/ft_split00.c
+char				**ft_split00(char *s);
+
+//@addindex parsing/get_next_line.c
+char				*get_next_line(int fd);
 // @addindex parsing/ft_split00.c
 char				**ft_split00(char *s);
 
@@ -273,9 +303,11 @@ void				my_put_pixel_to_image(int x, int y, int color);
 void				fillrect(t_point point, int width, int height, int color);
 void				_2dmap(t_map *map);
 void				_2dmap_render(t_data *data);
+void				_2dmap_render(t_data *data);
 void				fillline(t_point from, t_point to, double angle, int color);
 
 // @addindex game_element/player.c
+void				player_init(t_data *data);
 void				player_init(t_data *data);
 void				put_player(t_player *player);
 int					update_player(int keycode);
@@ -289,6 +321,9 @@ double				cal_distance(t_point point1, t_point point2);
 // @addindex utilities/print_fts.c
 void				print_map(t_map *data);
 
+// @addindex utilities/print_fts.c
+void				print_map(t_map *data);
+
 // @addindex game_element/check_fts.c
 bool				is_wall(int x, int y, t_data *data);
 
@@ -298,10 +333,11 @@ void				free_map(t_map *map);
 
 // @addindex raycasting/raycasting.c
 t_ray				*raycasting(t_data *data);
-void				ray_render(t_ray *ray, t_data *data);
-void				rays_many_render(t_ray *rays, int num_rays);
 
 // @addindex raycasting/ray_functions.c
 t_ray				ray_create(double angle);
+double				normalize_angle(double angle);
+void				ray_render(t_ray *ray, t_data *data);
+void				rays_many_render(t_ray *rays, int num_rays);
 
 #endif

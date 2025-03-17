@@ -7,6 +7,7 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 03:40:06 by akhobba           #+#    #+#             */
 /*   Updated: 2025/03/14 00:47:55by akhobba          ###   ########.fr       */
+/*   Updated: 2025/03/14 00:47:55by akhobba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +61,20 @@ int	update_player(int keycode)
 		data->player->turn_direction = 1;
 	else if (keycode == 65307)
 		close_program();
+	data->player->rotation_angle = normalize_angle(data->player->rotation_angle);
 	mlx_destroy_image(data->mlx.instance, data->mlx.image.img);
-	data->player->rotation_angle += data->player->turn_direction * data->player->turn_speed;
+	data->player->rotation_angle += data->player->turn_direction
+		* data->player->turn_speed;
 	steps = data->player->walk_direction * data->player->walk_speed;
 	x = data->player->position.x;
 	y = data->player->position.y;
-	data->player->position.x += cos(data->player->rotation_angle) * steps;
-	data->player->position.y += sin(data->player->rotation_angle) * steps;
+	data->player->position.x += (int)(cos(data->player->rotation_angle) * steps);
+	data->player->position.y += (int)(sin(data->player->rotation_angle) * steps);
+	// TODO: improving the code to let the player move next to the wall
 	if (is_wall(data->player->position.x, data->player->position.y, data))
 	{
 		data->player->position.x = x;
 		data->player->position.y = y;
-		// if (data->player->walk_direction == 1)
-		// {
-		// 	data->player->position.x = x - 1;
-		// 	data->player->position.y = y - 1;
-		// }
-		// else
-		// {
-		// 	data->player->position.x = x + 1;
-		// 	data->player->position.y = y + 1;
-		// }
 	}
 	_2dmap_render(data);
 	return (0);

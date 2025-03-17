@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/15 22:57:36 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/17 00:40:47 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	cp_map_array(t_map *data, char *av[])
 
 	i = 0;
 	fd = open(av[1], O_RDONLY);
-	data->map = malloc(sizeof(char *) * (data->info->height + 1));
-	if (!data->map)
+	data->kharita = malloc(sizeof(char *) * (data->info->height + 1));
+	if (!data->kharita)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
 		free_memory(data);
@@ -52,33 +52,26 @@ void	cp_map_array(t_map *data, char *av[])
 	line = get_next_line(fd);
 	while (line)
 	{
-		data->map[i] = ft_strdup(line);
+		data->kharita[i] = ft_strdup(line);
 		i++;
 		free(line);
 		line = get_next_line(fd);
 	}
-	data->map[i] = NULL;
+	data->kharita[i] = NULL;
 	check_invalid_character(data);
 	close(fd);
 }
 
-int	free_memory(t_map *data)
+void	free_memory(t_map *data)
 {
 	int	k;
 
 	k = 0;
-	while (k < data->info->height)
-	{
-		free(data->map[k]);
-		k++;
-	}
-	k = 0;
-	while (k < data->map_height)
+	while (data->kharita[k])
 	{
 		free(data->kharita[k]);
 		k++;
 	}
-	free(data->map);
 	free(data->info);
 	free(data);
 	exit(1);
@@ -110,12 +103,8 @@ t_map	*parsing(int ac, char *av[])
 	if (first_and_last_lines_check(data))
 		free_memory(data);
 	check_player_valid_pos(data);
-	printf("playable\n");
 	cp_flkharita(data);
-	printf("last_line_in_map: %d\n", data->info->last_line_in_map);
-	printf("first_line_in_map: %d\n", data->info->first_line_in_map);
-	printf("map_height: %d\n", data->map_height);
-	printf("map_width: %d\n", data->map_width);
+	player_possitions(data);
 	free_memory(data);
 	return (data);
 }
