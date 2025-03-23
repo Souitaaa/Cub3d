@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_boundaries_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akhobba <akhobba@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 22:39:51 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/17 00:35:53 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/21 23:40:02 by akhobba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void player_possitions(t_map *data)
 {
 	int i = 0;
 	int j = 0;
-	
+
 	while (data->map[i] && i <= data->info->last_line_in_map)
 	{
 		j = 0;
@@ -43,8 +43,8 @@ void player_possitions(t_map *data)
 		{
 			if (data->map[i][j] == 'W' || data->map[i][j] == 'E' || data->map[i][j] == 'N' || data->map[i][j] == 'S')
 			{
-				data->info->player_in_x = j;
-				data->info->player_in_y = i;
+				data->player_x = j;
+				data->player_y= i;
 			}
 			j++;
 		}
@@ -60,7 +60,7 @@ void	cp_flkharita(t_map *data)
 	i = 0;
 	j = 0;
 	fd = open(data->info->file, O_RDONLY);
-	data->map= malloc(sizeof(char *) * (data->info->height + 1));
+	data->map = malloc(sizeof(char *) * (data->info->height + 1));
 	line = get_next_line(fd);
 	while (line && i < data->info->first_line_in_map)
 	{

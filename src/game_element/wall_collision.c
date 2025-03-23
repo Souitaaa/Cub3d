@@ -3,24 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   wall_collision.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
+/*   By: akhobba <akhobba@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/17 00:40:02 by csouita          ###   ########.fr       */
+/*   Created: 2025/03/21 01:40:20 by akhobba           #+#    #+#             */
+/*   Updated: 2025/03/21 01:40:23 by akhobba          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "cub3d.h"
 
-bool	is_wall(int x, int y, t_data *data)
+bool	is_wall(int x, int y)
 {
+	t_data	*data;
+	int		x_cub;
+	int		y_cub;
+
+	data = get_data();
+	x_cub = floor(x / CUB_SIZE);
+	y_cub = floor(y / CUB_SIZE);
 	if (x < 0 || y < 0 || x >= data->mlx.win_width || y >= data->mlx.win_height)
 		return (true);
-	printf("x / 32: %d\n", x / 32);
-	printf("y / 32: %d\n", y / 32);
-	printf("data->map->map[y / 32][x / 32]: %c\n", data->map->map[y / 32][x / 32]);
-	if (data->map->map[y / 32][x / 32] == '1')
+	if (data->map->map[y_cub][x_cub] == '1')
 		return (true);
 	return (false);
 }
