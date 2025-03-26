@@ -6,7 +6,7 @@
 /*   By: csouita <csouita@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 03:49:04 by csouita           #+#    #+#             */
-/*   Updated: 2025/03/23 02:50:42 by csouita          ###   ########.fr       */
+/*   Updated: 2025/03/26 02:26:01 by csouita          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	ft_error(char *str, t_map *data)
 {
 	ft_putstr_fd(str, 2);
-	free_elements(data);
-	free_memory(data);
 	free_elements(data);
 	free_memory(data);
 	exit(1);
@@ -31,6 +29,7 @@ char	**init_split_memory(t_map *data)
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
 		free_memory(data);
+		exit(1);;
 	}
 	return (split);
 }
@@ -48,6 +47,7 @@ void	cp_map_array(t_map *data, char *av[])
 	{
 		ft_putstr_fd("Error\nMemory allocation failed\n", 2);
 		free_memory(data);
+		exit(1);
 	}
 	line = get_next_line(fd);
 	while (line)
@@ -58,32 +58,27 @@ void	cp_map_array(t_map *data, char *av[])
 		line = get_next_line(fd);
 	}
 	data->kharita[i] = NULL;
-	check_invalid_character(data);
 	close(fd);
 }
 
 void	free_memory(t_map *map)
 {
-	int	k;
+	int	i;
 
-	k = 0;
-	while (map->map[k])
+	i = 0;
+	if (map->info)
+		free(map->info);
+	if (map->kharita)
 	{
-		free(map->map[k]);
-		k++;
+		while (map->kharita[i])
+		{
+			free(map->kharita[i]);
+			i++;
+		}
+		free(map->kharita);
 	}
-	k = 0;
-	while (map->kharita[k])
-	{
-		free(map->kharita[k]);
-		k++;
-	}
-	free(map->kharita);
-	free(map->map);
-	free(map->info);
 	free(map);
 }
-
 t_map	*parsing(int ac, char *av[])
 {
 	t_map	*data;
@@ -99,19 +94,22 @@ t_map	*parsing(int ac, char *av[])
 	}
 	ft_memset(data->info, 0, sizeof(t_info));
 	ft_check_file_path(data, ac, av);
+	map_height(data, av);
+	cp_map_array(data, av);
+	check_invalid_character(data);
+	check_boundaries(data);
 	last_line(data);
 	parse_textures(data);
+	if (first_and_last_lines_check(data))
+		exit(1);
 	if (check_xpm(data))
 	{
 		free_elements(data);
 		free_memory(data);
 	}
 	first_line_in_map(data);
-	if (first_and_last_lines_check(data))
-		free_memory(data);
 	check_player_valid_pos(data);
 	cp_flkharita(data);
 	player_possitions(data);
-	// free_memory(data);
 	return (data);
 }
